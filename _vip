@@ -1,0 +1,56 @@
+#compdef vip
+
+_vip() { 
+	local curcontext="$curcontext" state line
+	typeset -A opt_args
+
+	_arguments \
+		'1: :->command'\
+		'2: :->subcommand'\
+		'3: :->trecommand'
+
+	local a_; a_=(box connect destroy global-status halt init login package plugin provision rdp reload resume share ssh ssh-config status suspend up version wp)
+	local a_wp; a_wp=(cache cap cli comment core cron db eval eval-file export help import media menu network option plugin post rewrite role scaffold search-replace shell sidebar site super-admin term theme transient user widget)
+	local a_wp_cache; a_wp_cache=(add decr delete flush get incr replace set type)
+	local a_wp_cap; a_wp_cap=(add list remove)
+	local a_wp_cli; a_wp_cli=(check-update cmd-dump completions info param-dump version)
+	local a_wp_comment; a_wp_comment=(approve count create delete exists get list meta spam status trash unapprove unspam untrash update url)
+	local a_wp_core; a_wp_core=(check-update config download install is-installed language multisite-convert multisite-install update update-db verify-checksums version)
+	local a_wp_cron; a_wp_cron=(event schedule test)
+	local a_wp_db; a_wp_db=(cli create drop export import optimize query repair reset tables)
+	local a_wp_media; a_wp_media=(import regenerate)
+	local a_wp_menu; a_wp_menu=(create delete item list location)
+	local a_wp_network; a_wp_network=(meta)
+	local a_wp_option; a_wp_option=(add delete get update)
+	local a_wp_plugin; a_wp_plugin=(activate deactivate delete get install is-installed list path search status toggle uninstall update)
+	local a_wp_post; a_wp_post=(create delete edit generate get list meta update url)
+	local a_wp_rewrite; a_wp_rewrite=(flush list structure)
+	local a_wp_role; a_wp_role=(create delete exists list reset)
+	local a_wp_scaffold; a_wp_scaffold=(_s child-theme package-tests plugin plugin-tests post-type taxonomy)
+	local a_wp_site; a_wp_site=(create delete empty list url)
+	local a_wp_theme; a_wp_theme=(activate delete disable enable get install is-installed list mod path search status update)
+	local a_wp_list; a_wp_list=(list)
+	local a_wp_superadmin; a_wp_superadmin=(add list remove)
+	local a_wp_term; a_wp_term=(create delete generate get list update url)
+	local a_wp_transient; a_wp_transient=(delete delete-all delete-expired get set type)
+	local a_wp_user; a_wp_user=(add-cap add-role create delete generate get import-csv list list-caps meta remove-cap remove-role set-role update)
+	local a_wp_widget; a_wp_widget=(add deactivate delete list move update);
+
+	declare length=${#words}
+	declare lower=$(($length-2))
+	declare less="a_"$(echo ${words:1:$lower} | sed -e 's: :_:g' | sed -e 's:-::g')
+	declare more="a_"$(echo ${words:1:$length} | sed -e 's: :_:g' | sed -e 's:-::g')
+
+	if [ -n "$more" ]; then
+		more=$(eval "echo \$$more")
+		less=$(eval "echo \$$less")
+
+		if [ -n "$more" ]; then
+			eval "compadd \"\$@\" $more"
+		else
+			eval "compadd \"\$@\" $less"
+		fi
+	fi
+}
+ 
+_vip "$@"
